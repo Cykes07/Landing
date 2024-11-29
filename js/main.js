@@ -1,12 +1,23 @@
 const databaseURL = 'https://landing-1ec68-default-rtdb.firebaseio.com/coleccion.json'; 
 
-let sendData = ( ) => {  
-
-    
+let sendData = () => {  
     // Obtén los datos del formulario
     const formData = new FormData(form);
     const data = Object.fromEntries(formData.entries()); // Convierte FormData a objeto
-    data['saved'] = new Date().toLocaleString('es-CO', { timeZone: 'America/Guayaquil' })
+
+    // Obtén los juegos seleccionados
+    const games = [];
+    formData.forEach((value, key) => {
+        if (key === 'games') {
+            games.push(value); // Agrega cada juego marcado al array
+        }
+    });
+
+    // Agrega los juegos al objeto `data`
+    data['games'] = games;
+    data['saved'] = new Date().toLocaleString('es-CO', { timeZone: 'America/Guayaquil' }); // Fecha de guardado
+
+    // Enviar datos al servidor
     fetch(databaseURL, {
         method: 'POST', // Método de la solicitud
         headers: {
@@ -21,80 +32,64 @@ let sendData = ( ) => {
         return response.json(); // Procesa la respuesta como JSON
     })
     .then(result => {
-        alert('Agradeciendo tu preferencia, nos mantenemos actualizados y enfocados en atenderte como mereces'); // Maneja la respuesta con un mensaje
-        form.reset()
-        
+        alert('Agradeciendo tu preferencia, gracias por tu comentarios'); // Mensaje de confirmación
+        form.reset(); // Resetea el formulario
     })
     .catch(error => {
         alert('Hemos experimentado un error. ¡Vuelve pronto!'); // Maneja el error con un mensaje
     }); 
+};
 
-}
 
 let getData = async () => {  
-
     try {
+        const response = await fetch(databaseURL, { method: 'GET' });
 
-        // Realiza la petición fetch a la URL de la base de datos
-        const response = await fetch(databaseURL, {
-            method: 'GET'
-        });
-
-        // Verifica si la respuesta es exitosa
         if (!response.ok) {
-          alert('Hemos experimentado un error. ¡Vuelve pronto!'); // Maneja el error con un mensaje
+            alert('Hemos experimentado un error. ¡Vuelve pronto!'); 
+            return;
         }
 
-        // Convierte la respuesta en formato JSON
         const data = await response.json();
 
-        if(data != null) {
-
-            // Cuente el número de suscriptores registrados por fecha a partir del objeto data
-
-            // END
-            let countSuscribers = new Map()
+        if (data != null) {
+            let gameCounts = new Map();
 
             if (Object.keys(data).length > 0) {
                 for (let key in data) {
-       
-                    let { email, saved } = data[key]
-                       
-                    let date = saved.split(",")[0]
-                       
-                    let count = countSuscribers.get(date) || 0;
-                    countSuscribers.set(date, count + 1)
+                    const { games } = data[key];
+                    if (Array.isArray(games)) {
+                        games.forEach(game => {
+                            let count = gameCounts.get(game) || 0;
+                            gameCounts.set(game, count + 1);
+                        });
+                    }
                 }
             }
-            
 
-            // Genere y agregue filas de una tabla HTML para mostrar fechas y cantidades de suscriptores almacenadas 
-            if (countSuscribers.size > 0) {
+            // Mostrar el top 5 de juegos más jugados
+            if (gameCounts.size > 0) {
+                const sortedGames = [...gameCounts.entries()]
+                    .sort(([, countA], [, countB]) => countB - countA) // Orden descendente
+                    .slice(0, 5); // Top 5 juegos
 
-                subscribers.innerHTML = ''
-       
-                let index = 1;
-                for (let [date, count] of countSuscribers) {
+                topGames.innerHTML = ''; // Limpia la tabla
+
+                sortedGames.forEach(([game, count], index) => {
                     let rowTemplate = `
                     <tr>
-                        <th>${index}</th>
-                        <td>${date}</td>
+                        <th>${index + 1}</th>
+                        <td>${game}</td>
                         <td>${count}</td>
-                    </tr>`
-                    subscribers.innerHTML += rowTemplate
-                    index++;
-                }
+                    </tr>`;
+                    topGames.innerHTML += rowTemplate;
+                });
             }
-            // END
-
         }
-
-      } catch (error) {
-        // Muestra cualquier error que ocurra durante la petición
-        alert('Hemos experimentado un error. ¡Vuelve pronto!'); // Maneja el error con un mensaje
+    } catch (error) {
+        alert('Hemos experimentado un error. ¡Vuelve pronto!'); 
     }
-
-}
+};
 
 
 let ready = () => {
@@ -133,6 +128,8 @@ let loaded = () => {
     console.log('Iframes e Images cargadas')
 
 }
+
+
 
 window.addEventListener("DOMContentLoaded", ready);
 window.addEventListener("load", loaded)

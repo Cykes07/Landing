@@ -23,7 +23,7 @@ CSS STRUCTURE:
 
 --------------------------------------------------------------*/
 body {
-  --heading-font: "Marcellus", Roboto, sans-serif;
+  --heading-font: 'Dragonfish', sans-serif;
   --heading-font-weight: 400;
   --heading-color: #111;
   --heading-line-height: 1.24;
@@ -42,7 +42,7 @@ body {
   --bs-secondary: #6c757d;
   --bs-black: #111;
   --bs-light: #F1F1F0;
-  --bs-dark: #212529;
+  --bs-dark: #000000;
   --bs-gray: #9aa1a7;
   --bs-gray-dark: #51565b;
 
@@ -50,7 +50,7 @@ body {
   --bs-secondary-rgb: 108, 117, 125;
   --bs-black-rgb: 17, 17, 17;
   --bs-light-rgb: 241, 241, 240;
-  --bs-dark-rgb: 33, 37, 41;
+  --bs-dark-rgb: 32, 32, 32;
 
   --bs-link-color: #111;
   --bs-link-color-rgb: 17, 17, 17;
@@ -62,6 +62,17 @@ body {
 body {
   letter-spacing: 0.03rem;
 }
+
+@font-face {
+  font-family: 'Dragonfish';
+  src: url('fonts/DragonfishRegular.woff2') format('woff2'),
+      url('fonts/DragonfishRegular.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+
 
 h1,
 .h1,
@@ -146,6 +157,16 @@ a {
   /* width: 98%; */
   max-width: 1800px;
 }
+
+.img-kiryu{
+  width: 400px; 
+  height: 550px; 
+} 
+
+.img-per{
+  width: auto; 
+  height: 550px; 
+} 
 
 /* Dropdown */
 .dropdown-menu {
@@ -616,7 +637,7 @@ a {
 /** Search Popup
 --------------------------------------------------------------*/
 .search-popup {
-  background-color: #fff;
+  background-color: #111;
   position: fixed;
   left: 0;
   top: 0;
@@ -639,7 +660,7 @@ a {
   transition: opacity 0.3s 0s, visibility 0s 0s;
 }
 .search-popup-container {
-  background-color: transparent;
+  background-color: #111;
   position: relative;
   top: 50%;
   margin: 0 auto;
@@ -792,7 +813,7 @@ a {
 ------------------------------------------------------------- */
 .icon-arrow {
   position: absolute;
-  top: 50%;
+  top: 150%;
   font-size: 2em;
   color: var(--dark-color);
   z-index: 8;
@@ -1540,3 +1561,51 @@ a.btn-link.text-light:after {
   background-size: cover;
   transition: transform .3s ease-out;
 }
+
+.logo-image {
+  width: 100%; 
+  height: auto; 
+  max-width: 720px; 
+}
+
+#Kiryu_Saga {
+    background-color: #dbdddd; 
+    color: #000000; 
+}
+
+#Kiryu_Saga h1.section-title {
+    color: #000000; 
+}
+
+#Kiryu_Saga p {
+    color: #000000; 
+}
+
+#intro {
+  background-color: #000000;
+}
+
+.navbar-brand img {
+  width: 150px; 
+  height: auto;
+  margin: 0 auto; 
+}
+
+.color {
+  background-color: #3a3836f5; 
+}
+
+
+
+.img-Ichiban {
+  max-width: 100%; 
+  max-height: 600px; 
+}
+
+#ichiban_saga {
+  background-color: #fdbe35; 
+  color: #000000; 
+}
+
+
+
